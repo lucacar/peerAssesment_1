@@ -31,13 +31,17 @@ activityData <- read.csv('activity.csv')
 ##### 1. Calculate steps per each day excluding NA values 
 
 ```r
-stepsPerDay <- tapply(activityData$steps, activityData$date, sum, na.rm=TRUE)
+stepsPerDay <- aggregate(steps ~ as.Date(activityData$date, format = "%Y-%m-%d"), activityData, sum)
+colnames(stepsPerDay) <- c("date","steps")
 ```
 
 ##### 2. Make a histogram of the total number of steps taken each day
 
 ```r
-qplot(stepsPerDay, xlab='Total steps per day', ylab='Frequency', binwidth = 500) + geom_histogram(colour="black", fill="grey", binwidth = 500)
+ggplot(stepsPerDay, aes(x = steps)) + 
+       geom_histogram(aes(fill = ..count..), origin=0.1, binwidth=1000) +
+       labs(title="Histogram of Steps Taken per Day", 
+       x = "Number of Steps per Day", y = "Frequency")
 ```
 
 ![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-4-1.png) 
@@ -46,12 +50,12 @@ qplot(stepsPerDay, xlab='Total steps per day', ylab='Frequency', binwidth = 500)
 ###### Apply mean and median functions to stepsPerDay  
 
 ```r
-stepsPerDayMean <- mean(stepsPerDay)
-stepsPerDayMedian <- median(stepsPerDay)
+stepsPerDayMean <- mean(stepsPerDay$steps, na.rm=TRUE)
+stepsPerDayMedian <- median(stepsPerDay$steps, na.rm=TRUE)
 ```
 ## Result
-* Mean: 9354.2295082
-* Median:  10395
+* Mean: 10766.189
+* Median:  10765
 
 -----
 
@@ -113,7 +117,7 @@ activityDataImputed$steps <- impute(activityData$steps, fun=mean)
 
 ```r
 stepsPerDayImputed <- tapply(activityDataImputed$steps, activityDataImputed$date, sum)
-qplot(stepsPerDayImputed, xlab='Total steps per day (Imputed)', ylab='Frequency', binwidth = 500) + geom_histogram(colour="black", fill="grey", binwidth = 500)
+qplot(stepsPerDayImputed, xlab='Total steps per day (Imputed)', ylab='Frequency', binwidth=1000) + geom_histogram(aes(fill = ..count..), binwidth=1000)
 ```
 
 ![plot of chunk unnamed-chunk-11](figure/unnamed-chunk-11-1.png) 
@@ -124,8 +128,8 @@ qplot(stepsPerDayImputed, xlab='Total steps per day (Imputed)', ylab='Frequency'
 stepsPerDayMeanImputed <- mean(stepsPerDayImputed)
 stepsPerDayMedianImputed <- median(stepsPerDayImputed)
 ```
-* Mean (Imputed): 1.0766189 &times; 10<sup>4</sup>
-* Median (Imputed):  1.0766189 &times; 10<sup>4</sup>
+* Mean (Imputed): 10766.189
+* Median (Imputed):  10766.189
 
 
 ----

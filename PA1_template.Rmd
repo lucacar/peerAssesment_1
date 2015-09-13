@@ -38,7 +38,7 @@ stepsPerDay <- tapply(activityData$steps, activityData$date, sum, na.rm=TRUE)
 
 ##### 2. Make a histogram of the total number of steps taken each day
 ```{r}
-qplot(stepsPerDay, xlab='Total steps per day', ylab='Frequency', binwidth = 500) + geom_histogram(colour="black", fill="grey", binwidth = 500)
+qplot(stepsPerDay, xlab='Total steps per day', ylab='Frequency', binwidth = 1000) + geom_histogram(colour="black", fill="grey", binwidth = 1000)
 ```
 
 ##### 3. Calculate and report the mean and median total number of steps taken per day
@@ -103,7 +103,7 @@ activityDataImputed$steps <- impute(activityData$steps, fun=mean)
 
 ```{r}
 stepsPerDayImputed <- tapply(activityDataImputed$steps, activityDataImputed$date, sum)
-qplot(stepsPerDayImputed, xlab='Total steps per day (Imputed)', ylab='Frequency', binwidth = 500) + geom_histogram(colour="black", fill="grey", binwidth = 500)
+qplot(stepsPerDayImputed, xlab='Total steps per day (Imputed)', ylab='Frequency', binwidth = 1000) + geom_histogram(colour="black", fill="grey", binwidth = 1000)
 ```
 
 ###### Calculate mean and median total number of steps taken per day.:
